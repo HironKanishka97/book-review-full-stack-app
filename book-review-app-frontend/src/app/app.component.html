@@ -1,0 +1,118 @@
+<div class="container d-flex flex-column  ">
+  <div class="fixed-header ">
+    <header class="text-center h1 mt-2 p-2 shadow ">Book Review App</header>
+    <div class="container d-flex justify-content-around">
+      <h3>Book Review List</h3>
+      <button type="button" class="btn btn-success mx-5 px-3 mb-1" data-bs-toggle="modal"
+              data-bs-target="#newreview">
+        + Add New Review
+      </button>
+    </div>
+    <div class="container d-flex flex-row flex-wrap mt-3 ">
+      <form [formGroup]="csearch" class="csearch d-flex flex-row w-100 justify-content-center gap-5">
+        <div *ngFor="let column of cscolumns; let i = index" class="me-3 mb-3">
+          <mat-form-field appearance="outline" class="w-auto">
+            <mat-label>{{ csprompts[i] }}</mat-label>
+            <input matInput [formControlName]="column" (keyup)="filterData()">
+          </mat-form-field>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <div class="main-content">
+
+
+
+    <div class="container d-flex flex-column justify-content-center p-5 ">
+
+      <div *ngFor="let br of bookReviewList">
+        <div id="book-card" class="card w-100 mb-1">
+          <div class="card-header text-primary fw-bold h4">
+            {{ br.bookTitle }}
+          </div>
+          <div class="card-body">
+            <blockquote class="blockquote mb-2">
+              <p>{{ br.author }} </p>
+              <p class="fs-6">{{ br.review }}</p>
+              <footer class="blockquote-footer">Rating {{ br.rating }} ⭐ - Date Added - {{ br.dateAdded | date: 'yyyy-MM-dd' }}</footer>
+            </blockquote>
+            <button type="button" class="btn btn-warning" (click)="update(br)">Update</button>
+            <button type="button" class="btn btn-danger mx-2" (click)="delete(br)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--new review-->
+<div class="modal fade" id="newreview" tabindex="-1" aria-labelledby="newReviewLbl" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="newReviewLbl">Add /Update Review</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="bookReviewForm" class="d-flex flex-column">
+
+          <mat-form-field appearance="outline">
+            <mat-label>Book Title</mat-label>
+            <input matInput formControlName="bookTitle">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Author</mat-label>
+            <input matInput formControlName="author">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Rating</mat-label>
+            <input matInput formControlName="rating">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Review</mat-label>
+            <input matInput formControlName="review">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="date" formControlName="dateAdded">
+            <mat-datepicker-toggle matIconSuffix [for]="date"></mat-datepicker-toggle>
+            <mat-datepicker #date></mat-datepicker>
+          </mat-form-field>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="add()" *ngIf="enaAdd">Add</button>
+            <button type="button" class="btn btn-primary" (click)="updateinner()" *ngIf="enaUpdate">Update</button>
+            <button type="button" class="btn btn-warning" (click)="cancel()">Clear</button>
+            <button type="button" class="btn btn-info" data-bs-dismiss="modal">Close</button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--dialog box-->
+<div class="modal bg-body" id="dialog-box" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="modalBody">Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
